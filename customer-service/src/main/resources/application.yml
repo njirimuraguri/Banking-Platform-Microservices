@@ -4,6 +4,17 @@ server:
 spring:
   application:
     name: customer-service
+  cloud:
+    inetutils:
+      default-hostname: localhost
+      ignored-interfaces:
+        - docker0
+        - veth.*
+        - VM.*
+      preferredNetworks:
+        - 192.168
+        - 10.0
+        - 172.16
 
   datasource:
     url: jdbc:postgresql://localhost:5432/customer_service_db
@@ -24,6 +35,8 @@ spring:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
+    fail-on-missing-locations: true
+
 
 logging:
   level:
@@ -34,5 +47,14 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
   instance:
-    prefer-ip-address: true
+    prefer-ip-address: false
+    hostname: localhost
+    instance-id: localhost:${server.port}
+    status-page-url-path: ${server.servlet.context-path:}/actuator/info
+    health-check-url-path: ${server.servlet.context-path:}/actuator/health
+    lease-renewal-interval-in-seconds: 30
+    home-page-url: http://localhost:${server.port}/
+

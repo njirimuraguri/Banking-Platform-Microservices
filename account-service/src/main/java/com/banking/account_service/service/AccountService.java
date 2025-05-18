@@ -4,6 +4,7 @@ import com.banking.account_service.client.CustomerClient;
 import com.banking.account_service.dto.*;
 import com.banking.account_service.entity.Account;
 import com.banking.account_service.repository.AccountRepository;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,19 @@ public class AccountService {
      * Create a new account and return the response DTO.
      */
     public AccountResponse createAccount(AccountRequest request) {
-        // Verify customer exists via Feign
-        CustomerDto customer = customerClient.getCustomerById(request.getCustomerId());
+        // Validate customer exists
+        try {
+            StandardResponse<CustomerDto> response = customerClient.getCustomerById(request.getCustomerId());
+            CustomerDto customer = response.getData();
+            // continue with validation
+        } catch (FeignException.NotFound ex) {
+            throw new IllegalArgumentException("Customer with ID " + request.getCustomerId() + " not found");
+        }
 
         Account account = Account.builder()
                 .iban(request.getIban())
                 .bicSwift(request.getBicSwift())
-                .customerId(customer.getCustomerId())
+                .customerId(request.getCustomerId())
                 .build();
 
         Account saved = repository.save(account);

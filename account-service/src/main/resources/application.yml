@@ -4,12 +4,27 @@ server:
 spring:
   application:
     name: account-service
+  cloud:
+    inetutils:
+      default-hostname: localhost
+      ignored-interfaces:
+        - docker0
+        - veth.*
+        - VM.*
+      preferredNetworks:
+        - 192.168
+        - 10.0
+        - 172.16
 
   datasource:
     url: jdbc:postgresql://localhost:5432/account_service_db
     username: njiri
     password: njiri123#
     driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
+
 
   jpa:
     hibernate:
@@ -22,17 +37,41 @@ spring:
 
   flyway:
     enabled: true
-    locations: classpath:db/migration
+    locations: filesystem:src/main/resources/db/migration
     baseline-on-migrate: true
+    fail-on-missing-locations: true
+    out-of-order: true
+    validate-on-migrate: false
 
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.banking.account_service.client: DEBUG
+
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
   instance:
     prefer-ip-address: true
+    hostname: localhost
+    instance-id: localhost:${server.port}
+    status-page-url-path: ${server.servlet.context-path:}/actuator/info
+    health-check-url-path: ${server.servlet.context-path:}/actuator/health
+    lease-renewal-interval-in-seconds: 30
+    home-page-url: http://localhost:${server.port}/
+
+customer-service:
+  url: http://localhost:8081  # URL of your customer-service
+
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000

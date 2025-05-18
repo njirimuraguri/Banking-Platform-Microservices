@@ -1,5 +1,6 @@
 package com.banking.card_service.service;
 
+import com.banking.card_service.client.AccountClient;
 import com.banking.card_service.dto.*;
 import com.banking.card_service.entity.*;
 import com.banking.card_service.repository.CardRepository;
@@ -15,8 +16,17 @@ import java.util.UUID;
 public class CardService {
 
     private final CardRepository repository;
+    private final AccountClient accountClient;
 
     public CardSensitiveResponse create(CardRequest request) {
+        // Step 1: Validate that accountId exists via OpenFeign
+        try {
+            accountClient.getAccountById(request.getAccountId());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Account with ID " + request.getAccountId() + " does not exist.");
+        }
+
+        // Step 2: Proceed to save the card
         Card card = Card.builder()
                 .cardAlias(request.getCardAlias())
                 .accountId(request.getAccountId())
@@ -27,7 +37,7 @@ public class CardService {
 
         card = repository.save(card);
 
-        // return masked response after creation
+        // Step 3: Return masked response
         return CardSensitiveResponse.builder()
                 .cardId(card.getCardId())
                 .cardAlias(card.getCardAlias())
