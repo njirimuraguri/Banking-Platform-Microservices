@@ -9,7 +9,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 @SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
-@EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
+@EnableSpringDataWebSupport
 public class AccountServiceApplication {
 
 	public static void main(String[] args) {

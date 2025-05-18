@@ -34,8 +34,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-database-postgresql</artifactId>
-			<scope>runtime</scope>
+			<artifactId>flyway-core</artifactId>
+			<!-- No need to specify version - let Spring Boot manage it -->
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
