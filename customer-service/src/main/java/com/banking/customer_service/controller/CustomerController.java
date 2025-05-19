@@ -1,6 +1,7 @@
 package com.banking.customer_service.controller;
 
 import com.banking.customer_service.dto.*;
+import com.banking.customer_service.repository.CustomerRepository;
 import com.banking.customer_service.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import java.util.UUID;
 public class CustomerController {
 
     private final CustomerService service;
+    private final CustomerRepository repository;
 
     /**
      * Create a new customer.
@@ -88,6 +90,7 @@ public class CustomerController {
                 .data(null)
                 .build());
     }
+
 
     /**
      * Search customers using full-text name search and created date range.

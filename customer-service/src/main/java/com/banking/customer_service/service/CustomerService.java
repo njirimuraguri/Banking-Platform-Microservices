@@ -2,6 +2,7 @@
 package com.banking.customer_service.service;
 
 import com.banking.customer_service.dto.*;
+import com.banking.customer_service.entity.AccountClient;
 import com.banking.customer_service.entity.Customer;
 import com.banking.customer_service.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class CustomerService {
 
     private final CustomerRepository repository;
+    private final AccountClient accountClient;
 
     /**
      * Create a new customer from request data.
