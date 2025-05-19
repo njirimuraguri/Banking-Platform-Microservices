@@ -19,11 +19,22 @@ public class CardService {
     private final AccountClient accountClient;
 
     public CardSensitiveResponse create(CardRequest request) {
-        // Step 1: Validate that accountId exists via OpenFeign
+        // Validate that accountId exists via OpenFeign
         try {
             accountClient.getAccountById(request.getAccountId());
         } catch (Exception e) {
             throw new IllegalArgumentException("Account with ID " + request.getAccountId() + " does not exist.");
+        }
+
+        // Check if this card type already exists for the account
+        if (repository.existsByAccountIdAndType(request.getAccountId(), request.getType())) {
+            throw new IllegalArgumentException("This account already has a " + request.getType() + " card");
+        }
+
+        // Check if account already has 2 cards
+        int existingCardCount = repository.countByAccountId(request.getAccountId());
+        if (existingCardCount >= 2) {
+            throw new IllegalArgumentException("This account already has the maximum allowed number of cards (2)");
         }
 
         // Step 2: Proceed to save the card
@@ -48,15 +59,22 @@ public class CardService {
                 .build();
     }
 
-    public Page<?> search(String cardAlias, CardType type, String pan, boolean showSensitive, Pageable pageable) {
-        Page<Card> cards = repository.searchCards(cardAlias, type, pan, pageable);
+    public Page<CardPublicResponse> search(String cardAlias, CardType type, String pan, Pageable pageable) {
+        String aliasLike = (cardAlias != null && !cardAlias.isBlank()) ? "%" + cardAlias.toLowerCase() + "%" : null;
+        String panLike = (pan != null && !pan.isBlank()) ? "%" + pan + "%" : null;
 
-        if (showSensitive) {
-            return cards.map(this::toSensitiveResponse);
-        } else {
-            return cards.map(this::toPublicResponse);
-        }
+        Page<Card> cards = repository.searchCards(aliasLike, type, panLike, pageable);
+        return cards.map(this::toPublicResponse);
     }
+
+
+    public CardPublicResponse getPublicById(UUID id) {
+        Card card = repository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Card not found"));
+
+        return toPublicResponse(card);
+    }
+
 
     public CardSensitiveResponse getById(UUID id) {
         Card card = repository.findById(id)
@@ -85,6 +103,7 @@ public class CardService {
 
     private CardPublicResponse toPublicResponse(Card card) {
         return CardPublicResponse.builder()
+                .accountId(card.getAccountId())
                 .cardAlias(card.getCardAlias())
                 .type(card.getType())
                 .pan(maskPan(card.getPan()))
@@ -122,7 +141,7 @@ public class CardService {
                 .build();
     }
 
-    // New: update alias, return masked
+    // update alias, return masked
     public CardSensitiveResponse updateMasked(UUID id, CardUpdateRequest request) {
         Card card = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Card not found"));

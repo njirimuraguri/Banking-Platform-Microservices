@@ -38,34 +38,35 @@ public class CardController {
      * Supports filtering by alias, type, and PAN.
      * By default, returns masked data unless showSensitive=true.
      */
-    @GetMapping
-    public ResponseEntity<StandardResponse<Page<?>>> searchCards(
+    @GetMapping("/search")
+    public ResponseEntity<StandardResponse<Page<CardPublicResponse>>> searchCardsPublic(
             @RequestParam(required = false) String cardAlias,
             @RequestParam(required = false) CardType type,
             @RequestParam(required = false) String pan,
-            @RequestParam(defaultValue = "false") boolean showSensitive,
-            @PageableDefault(size = 10, page = 0) Pageable pageable
+            @PageableDefault(size = 10) Pageable pageable
     ) {
-        Page<?> result = service.search(cardAlias, type, pan, showSensitive, pageable);
-        return ResponseEntity.ok(StandardResponse.<Page<?>>builder()
+        Page<CardPublicResponse> result = service.search(cardAlias, type, pan, pageable);
+        return ResponseEntity.ok(StandardResponse.<Page<CardPublicResponse>>builder()
                 .message("Cards retrieved successfully")
                 .timestamp(LocalDateTime.now())
                 .data(result)
                 .build());
     }
 
+
     /**
      * Get a card by ID (always returns masked PAN and CVV).
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<StandardResponse<CardSensitiveResponse>> getById(@PathVariable UUID id) {
-        CardSensitiveResponse card = service.getMaskedById(id);
-        return ResponseEntity.ok(StandardResponse.<CardSensitiveResponse>builder()
+    @GetMapping("/id/{id}")
+    public ResponseEntity<StandardResponse<CardPublicResponse>> getById(@PathVariable UUID id) {
+        CardPublicResponse card = service.getPublicById(id);  // NEW METHOD
+        return ResponseEntity.ok(StandardResponse.<CardPublicResponse>builder()
                 .message("Card retrieved successfully")
                 .timestamp(LocalDateTime.now())
                 .data(card)
                 .build());
     }
+
 
     /**
      * Update only the cardAlias of a card.

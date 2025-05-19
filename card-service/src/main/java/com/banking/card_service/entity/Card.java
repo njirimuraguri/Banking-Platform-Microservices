@@ -19,14 +19,16 @@ public class Card {
     @Id
     @GeneratedValue
     @UuidGenerator
+    @Column(updatable = false)
     private UUID cardId;
 
     private String cardAlias;
 
+    @Column(updatable = false)
     private UUID accountId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "card_type")
+    @Column(name = "card_type", updatable = false)
     private CardType type; // virtual or physical
 
     private String pan; // sensitive

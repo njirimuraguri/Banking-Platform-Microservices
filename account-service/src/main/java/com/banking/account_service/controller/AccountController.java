@@ -90,9 +90,10 @@ public class AccountController {
     public ResponseEntity<StandardResponse<Page<AccountResponse>>> searchAccounts(
             @RequestParam(required = false) String iban,
             @RequestParam(required = false) String bicSwift,
+            @RequestParam(required = false) String cardAlias,
             @PageableDefault(size = 10, page = 0) Pageable pageable
     ) {
-        Page<AccountResponse> accounts = service.searchAccounts(iban, bicSwift, pageable);
+        Page<AccountResponse> accounts = service.searchAccounts(iban, bicSwift,cardAlias, pageable);
 
         return ResponseEntity.ok(StandardResponse.<Page<AccountResponse>>builder()
                 .message("Accounts fetched successfully")

@@ -1,5 +1,6 @@
 package com.banking.account_service.service;
 
+import com.banking.account_service.client.CardClient;
 import com.banking.account_service.client.CustomerClient;
 import com.banking.account_service.dto.*;
 import com.banking.account_service.entity.Account;
@@ -9,8 +10,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Service class responsible for handling account-related business logic.
@@ -21,6 +25,7 @@ public class AccountService {
 
     private final AccountRepository repository;
     private final CustomerClient customerClient;
+    private final CardClient cardClient;
 
     /**
      * Create a new account and return the response DTO.
@@ -58,10 +63,37 @@ public class AccountService {
     /**
      * Paginated search for accounts using optional filters.
      */
-    public Page<AccountResponse> searchAccounts(String iban, String bicSwift, Pageable pageable) {
-        return repository.searchAccounts(iban, bicSwift, pageable)
+
+
+    public Page<AccountResponse> searchAccounts(String iban, String bicSwift, String cardAlias, Pageable pageable) {
+        if (iban != null && iban.isBlank()) {
+
+            iban = null;
+
+        }
+
+        if (cardAlias != null && !cardAlias.isBlank()) {
+            StandardResponse<Page<CardPublicDto>> response = cardClient.getCardsByAlias(cardAlias);
+            List<CardPublicDto> cards = response.getData().getContent();
+
+            List<UUID> accountIds = cards.stream()
+                    .map(CardPublicDto::getAccountId)
+                    .distinct()
+                    .collect(Collectors.toList());
+            System.out.println("Account IDs found from card-service (cardAlias=" + cardAlias + "): " + accountIds);
+
+            if (accountIds.isEmpty()) {
+                return Page.empty();
+            }
+
+            return repository.searchWithCardAlias(iban, bicSwift, accountIds, pageable)
+                    .map(this::toResponse);
+        }
+
+        return repository.searchWithoutCardAlias(iban, bicSwift, pageable)
                 .map(this::toResponse);
     }
+
 
     /**
      * Update IBAN and BIC Swift values for an existing account.

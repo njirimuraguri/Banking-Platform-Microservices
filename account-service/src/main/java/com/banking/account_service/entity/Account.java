@@ -19,12 +19,13 @@ public class Account {
     @Id
     @GeneratedValue
     @UuidGenerator
+    @Column(updatable = false)
     private UUID accountId;
 
     private String iban;
 
     private String bicSwift;
-
+    @Column(updatable = false)
     private UUID customerId;  // Reference to customer
 
     private LocalDateTime createdAt;
