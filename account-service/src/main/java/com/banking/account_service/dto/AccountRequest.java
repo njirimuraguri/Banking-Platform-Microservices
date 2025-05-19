@@ -12,5 +12,5 @@ import java.util.UUID;
 public class AccountRequest {
     private String iban;
     private String bicSwift;
-    private UUID customerId;  // passed in from frontend
+    private UUID customerId;
 }

@@ -32,5 +32,5 @@ public class GlobalExceptionHandler {
     }
 
 
-    // Optional: Handle other exceptions if needed
+    //  Handle other exceptions if needed
 }

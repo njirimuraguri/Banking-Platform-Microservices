@@ -26,8 +26,7 @@ public class Account {
 
     private String bicSwift;
     @Column(updatable = false)
-    private UUID customerId;  // Reference to customer
-
+    private UUID customerId;
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

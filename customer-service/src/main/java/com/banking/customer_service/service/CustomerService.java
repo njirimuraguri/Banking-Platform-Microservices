@@ -21,7 +21,6 @@ import java.util.UUID;
 public class CustomerService {
 
     private final CustomerRepository repository;
-    private final AccountClient accountClient;
 
     /**
      * Create a new customer from request data.

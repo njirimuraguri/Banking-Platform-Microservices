@@ -31,7 +31,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
 
         } catch (IOException e) {
             log.error("Error parsing feign client error response", e);
-            // If we can't parse the response, just return a generic error
+            // If can't parse the response, just return a generic error
             return new IllegalArgumentException("Error communicating with customer service: " + response.reason());
         }
     }
