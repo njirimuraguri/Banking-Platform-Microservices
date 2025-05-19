@@ -129,7 +129,7 @@ Run tests with
 
 ./mvnw test
 
-API Sample Endpoints
+API Sample Endpoints with postman collection attached
 customer-service (:8081)
 GET /api/customers/{id}
 

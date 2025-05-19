@@ -1,0 +1,424 @@
+{
+	"info": {
+		"_postman_id": "bba4d583-fd4b-409e-9683-d901c4cb0278",
+		"name": "Bank Microservices",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38114016"
+	},
+	"item": [
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Create a new Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Moses\",\r\n    \"lastName\": \"Njiri\"\r\n    \"otherName\": \"muraguri\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get customer by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/customers/9b11304b-9a6c-4cac-8cbe-1345f0c4bc30",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers",
+								"9b11304b-9a6c-4cac-8cbe-1345f0c4bc30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer Details",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Kelvin\",\r\n    \"lastName\": \"Mwai\",\r\n    \"otherName\": \"bwoga\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/customers/9b11304b-9a6c-4cac-8cbe-1345f0c4bc30",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers",
+								"9b11304b-9a6c-4cac-8cbe-1345f0c4bc30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/customers/9b11304b-9a6c-4cac-8cbe-1345f0c4bc30",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers",
+								"9b11304b-9a6c-4cac-8cbe-1345f0c4bc30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Customer By Name & Date Range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/customers?name=njiri&start=2025-05-17T00:00:00&end=2025-05-18T23:59:59&page=0&size=9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "njiri"
+								},
+								{
+									"key": "start",
+									"value": "2025-05-17T00:00:00"
+								},
+								{
+									"key": "end",
+									"value": "2025-05-18T23:59:59"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "Create a new account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"iban\": \"KE12EQBL12356\",\r\n  \"bicSwift\": \"DTBLKENDD66\",\r\n  \"customerId\": \"c31eb076-cb9d-4045-9ceb-04d02ec9a279\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/api/accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by account ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/api/accounts/85bc6613-d679-4c96-9c46-f63e44843fc0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"accounts",
+								"85bc6613-d679-4c96-9c46-f63e44843fc0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update IBAN and BIC Swift by account ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"iban\": \"KE12EQBL1567111\",\r\n    \"bicSwift\": \"123456711\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/api/accounts/85bc6613-d679-4c96-9c46-f63e44843fc0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"accounts",
+								"85bc6613-d679-4c96-9c46-f63e44843fc0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete account by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/api/accounts/85bc6613-d679-4c96-9c46-f63e44843fc0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"accounts",
+								"85bc6613-d679-4c96-9c46-f63e44843fc0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search accounts iban bicSwift & card Alias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/api/cards/search?iban=Vacation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"cards",
+								"search"
+							],
+							"query": [
+								{
+									"key": "iban",
+									"value": "Vacation"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "card",
+			"item": [
+				{
+					"name": "Create Card",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cardAlias\": \" Subscription\",\r\n  \"accountId\": \"067dd411-2fa5-4204-8248-d802ee504025\",\r\n  \"type\": \"virtual\",\r\n  \"pan\": \"12345678YYY\",\r\n  \"cvv\": \"543\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/api/cards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Card by Alias Type $ Ban",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/api/cards/search?cardAlias=entertainment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"cards",
+								"search"
+							],
+							"query": [
+								{
+									"key": "cardAlias",
+									"value": "entertainment"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Card by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/api/cards/001448ba-9780-4393-9ee4-919a4bb88694",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"cards",
+								"001448ba-9780-4393-9ee4-919a4bb88694"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Card Alias",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cardAlias\": \"Entertainment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/api/cards/36d07d7f-947a-481e-ba37-fa8a93b0351f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"cards",
+								"36d07d7f-947a-481e-ba37-fa8a93b0351f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Card by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/api/cards/a43d7f1b-fd2d-48b9-be3e-db3f7b3f7cce",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"cards",
+								"a43d7f1b-fd2d-48b9-be3e-db3f7b3f7cce"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
